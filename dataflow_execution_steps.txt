@@ -1,0 +1,36 @@
+Run pipelines with Dataflow and Python
+
+1. Enable Dataflow in a Google Cloud project.
+    gcloud services enable dataflow \
+    compute logging \
+    storage_component storage_api \
+    bigquery pubsub \
+    datastore.googleapis.com \
+    cloudresourcemanager.googleapis.com \
+    --project=<PROJECT-ID>
+
+2. Add the necessary IAM roles to the Compute Engine default service account.
+    Storage Admin, Dataflow Admin and Dataflow worker
+
+3. Install the Apache Beam SDK in Cloud Shell to let Dataflow transform data for the pipelines.
+    1.pip3 install virtualenv
+    python3 -m virtualenv env
+    source env/bin/activate
+
+    2.pip3 install apache-beam[gcp]
+
+4. Set up a Cloud Storage bucket for the output data.
+
+5. Run the example WordCount pipeline in Dataflow as a job.
+    python3 -m \
+    apache_beam.examples.wordcount \
+    --region us-central1 --input \
+    gs://dataflow-samples/shakespeare/kinglear.txt \
+    --output \
+    gs://dataflow-apache-quickstart_<PROJECT-ID>/results/output \
+    --runner DataflowRunner \
+    --project <PROJECT-ID> \
+    --temp_location \
+    gs://dataflow-apache-quickstart_<PROJECT-ID>/temp/
+    
+6. Monitor your job in Dataflow.
